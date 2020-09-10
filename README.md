@@ -13,6 +13,7 @@ working tree – staging area – repository
 ## add & commit(파일 올리기)
 - git status : working tree의 상태 알려줌
 - git add [file] : 파일을 working tree에서 staging area로 보내줌
+![git_add.jpg](images/git_add.jpg)
 - git add . : 현재 디렉토리 내 파일 중 new 또는 modified 된 것만 staging area로 보내줌
 - git add -a : 현재 디렉토리 내 모든 파일들을 staging area로 보내줌
 - git add * : 숨겨진 파일(.으로 시작하는 파일)을 제외한 모든 파일을 보내기 
@@ -29,6 +30,7 @@ working tree – staging area – repository
 - git log –all –graph –oneline : 한 줄로 그래프를 보여주며 전체의 히스토리를 보여줌
  
 ## git log 내용
+![git_log.png](images/git_history.png)
 - d2d3a47...... : version id
 - () 내부: 현재 version을 가리키는 branch 이름들, 현재 HEAD는 master branch를 가리킴
 - Author, date: 이름 및 commit 시간
