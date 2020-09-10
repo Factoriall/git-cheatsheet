@@ -5,7 +5,6 @@
 
 ## 기본 구조
 ![git_flow.png](images/git_intro.png)
-working tree – staging area – repository
 
 - working tree: 파일을 만들고 수정하면서 버전 저장을 하지 않은 공간
 - staging area: 수정한 파일 중 자신이 원하는 파일을 버전으로 묶어서 올리는 공간
