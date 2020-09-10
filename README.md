@@ -4,6 +4,7 @@
 - git init: 현재 위치의 파일을 git이 관리할 수 있게 초기화
 
 ## 기본 구조
+![git_flow.png](images/git_intro.png)
 working tree – staging area – repository
 
 - working tree: 파일을 만들고 수정하면서 버전 저장을 하지 않은 공간
