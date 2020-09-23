@@ -6,9 +6,9 @@
 ## 기본 구조
 ![git_flow.png](images/git_intro.png)
 
-- working tree: 파일을 만들고 수정하면서 버전 저장을 하지 않은 공간
-- staging area: 수정한 파일 중 자신이 원하는 파일을 버전으로 묶어서 올리는 공간
-- repository: 올린 버전을 실제로 저장하는 곳
+- working directory/working tree/working copy: 파일을 만들고 수정하면서 버전 저장을 하지 않은 공간
+- index/staging area/cache: 수정한 파일 중 자신이 원하는 파일을 버전으로 묶어서 올리는 공간
+- repository/history/tree: 올린 버전을 실제로 저장하는 곳
 
 ## add & commit(파일 올리기)
 - git status : working tree의 상태 알려줌
@@ -43,6 +43,10 @@
 - git reset --hard [version id] : 그 이후의 버전을 모두 삭제, 히스토리까지 다 삭제
 - git revert [version id] : 기존의 commit 내버려둔 채 과거의 버전으로 변경
 
+### git reset의 강도
+![reset_compare.png](images/git_reset_compare.png)
+
+
 ## 올리면 안되는 파일 commit시 삭제 방법
 - git rm --cached [파일 이름]: commit 이미 진행된 파일 git에서 빼내기
 - git filter-branch --tree-filter "rm -rf [디렉토리 이름]" HEAD: history에 있어선 안되는 정보 있는 파일 삭제
@@ -64,10 +68,39 @@
 - git remote: 원격 저장소 보여줌
 - git remote -v: 원격 저장소 + 주소를 보여줌
 
-## push & pull & clone
+## push & clone
 - git push -u [원격저장소 이름] [branch 이름] : 저장한 버전을 언급된 원격 저장소의 branch에 올리기, -u는 --set-upstream의 약자, 이를 입력 후 git pull시 추가 정보를 입력할 필요가 사라짐.
 - git clone [원격저장소 주소] (원하는 이름): 원격 저장소에 있는 내용들을 그대로 다른 로컬 저장소에 붙여서 넣기. 원하는 이름으로 바꾸고 싶을 시 주소 다음에 원하는 이름 적어두기(꼭 할 필요는 없음)
-- git pull: 하나의 원격 저장소에서 여러 로컬저장소가 연결되어 있을 시, 다른 로컬저장소가 push를 통해 변경했을 시 그 변경 내용을 자신의 로컬저장소에 적용하는 명령어
+
+## pull & fetch
+- git pull: 원격 저장소의 변경 내용을 자신의 로컬저장소에 다운로드 및 병합 과정 진행
+- git fetch: 원격 저장소의 변경 내용을 자신의 로컬 저장소에 다운도르, 병합은 진행하지 않음
+  * 신중할 때 사용 
+  * git diff HEAD origin/master: 원래 내용과 바뀐 내용과의 차이를 알 수 있음
+  * git log --decorate --all --oneline: commit이 얼마나 됐는지 확인
+  * 이후 git merge origin/master를 하면 git pull과 동일해짐
+
+## cherry-pick
+- git cherry-pick [version_id]: 다른 브랜치의 version_id 내에서의 변화만 가져와서 현재 버전에 적용
+- conflict 체크: 3-way merge로 base를 cherry-pick되어질 것의 이전 버전으로 삼아서 이뤄짐
+
+## rebase
+- git rebase [branch이름]: [branch이름]의 버전 다음으로 base 이후의 현재 branch history가 붙음
+- conflict 체크: HEAD를 먼저 옮길 branch로 이동 -> base를 바꿀 부분 이전 버전을 base로 삼아 3-way merge -> git rebase --continue로 계속 진행, HEAD를 바꾼 것으로 이동 -> 끝까지 갈 때까지 반복
+- repository로 올린 이후에는 사용하면 안됨, 두 branch의 working copy가 달라 코드가 완전히 꼬일 수 있음
+
+## rebase와 merge의 차이
+![rebase_vs_merge.png](images/merge_vs_rebase.png)
+
+### rebase를 활용해 git log 수정 방법
+- git fetch이후 git merge 진행 시: log에 merge 과정이 그대로 노출, 이를 rebase를 통해 합쳐서 push를 함으로써 history 간결화 가능
+- git log가 잡다한 것으로 채워질 시
+  1. git rebase -i HEAD~[숫자]: 현재 HEAD부터 아래로 숫자 만큼의 log의 정보를 가져옴
+  2. vim 내의 정보에서 log 옆 pick 정보를 변경
+    - drop: log 내용 삭제
+    - fixup: pick 또는 reword된 최근 내용(위로)으로 합쳐짐
+    - reword: log의 내용 수정
+  3. git push origin master -f: git에게 rebase가 force되었다는 것을 알림, 이전의 잡다한 정보들이 다 삭제
 
 ## fork
 - git에선 명령어 존재 X, github에서 다른 사람의 원격저장소를 자신의 원격저장소로 복제해서 생성, github의 우측 상단 fork 버튼 누르는 것으로 가능
@@ -87,7 +120,7 @@
 ### git alias 설정 통한 축약어 생성
 - git alias를 지정해서 복잡한 형식의 명령어들을 간단히 만드는 것이 가능
 
-### 여러 유용한 축약어
+#### 여러 유용한 축약어
 - git config --global alias.co checkout: checkout을 co로
 - git config --global alias.ci commit: commit를 ci로
 - git config --global alias.st status: status를 st로
