@@ -51,7 +51,7 @@
 - git rm --cached [파일 이름]: commit 이미 진행된 파일 git에서 빼내기
 - git filter-branch --tree-filter "rm -rf [디렉토리 이름]" HEAD: history에 있어선 안되는 정보 있는 파일 삭제
 -> git push origin --force –all로 github에 업데이트
-- git ls-files --ignored --exclude-standard -z|xargs -0 git rm --cached: commit 이미 진행되었지만 .gitignore 파일에 있는 파일 git에서 빼내기
+- git ls-files --ignored --exclude-standard -z | xargs -0 git rm --cached: commit 이미 진행되었지만 .gitignore 파일에 있는 파일 git에서 빼내기
 
 ## branch 설정 & merge
 - git branch: 현재 파일의 branch 목록을 보여줌
